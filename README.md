@@ -23,6 +23,8 @@ template-api/
 │   │   └── base.py
 │   ├── services/
 │   │   └── __init__.py
+│   ├── workflows/
+│   │   └── .gitkeep
 │   └── __init__.py
 ├── tests/
 ├── .env
