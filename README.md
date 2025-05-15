@@ -76,7 +76,8 @@ template-api/
 To add new endpoints:
 
 1. Create new modules in `app/api/endpoints/`
-2. Include router in `app/api/api.py`
+2. Ensure your module defines a `router` object (instance of FastAPI's `APIRouter`)
+3. That's it! Your router will be automatically registered with the application
 
 Example:
 ```python
@@ -90,8 +91,13 @@ async def get_users():
     return {"users": []}
 ```
 
-Then include in api.py:
-```python
-from app.api.endpoints import users
-app.include_router(users.router, prefix=settings.API_V1_STR)
-``` 
+No need to manually include your router in `api.py` - it will be discovered and registered automatically.
+
+### How it works
+
+The template implements an auto-discovery system:
+1. `app/api/endpoints/__init__.py` scans all Python files in the endpoints directory
+2. It collects any module that defines a `router` object
+3. `app/api/api.py` registers all discovered routers with the application
+
+This makes it easy to add new API functionality without modifying existing code. 

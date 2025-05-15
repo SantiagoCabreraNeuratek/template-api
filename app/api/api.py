@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.api.endpoints import health, workflows
+from app.api.endpoints import routers
 
 
 def create_app() -> FastAPI:
@@ -27,8 +27,9 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Include routers
-    app.include_router(health.router, prefix=settings.API_V1_STR)
-    app.include_router(workflows.router, prefix=settings.API_V1_STR)
+    # Include all routers automatically from the endpoints package
+    for module_name, router in routers.items():
+        app.include_router(router, prefix=settings.API_V1_STR)
+        print(f"Registered router from module: {module_name}")
 
     return app 
